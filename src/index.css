@@ -1,0 +1,69 @@
+* {
+    padding:0;
+    margin:0;
+    list-style: none;
+}
+
+.wrapper {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    width: 360px;
+    margin: 100px auto;
+}
+
+/* 搜索框部分 */
+.wrapper .sWrapper {
+    /* border: 1px solid #000; */
+    padding: 5px;
+}
+
+.wrapper .sWrapper .sText {
+   outline: none;
+   padding-left: 10px;
+   border-radius: 3px;
+   border: 1px solid #ccc;
+   height: 20px;
+   width: 160px;
+}
+.wrapper .sWrapper .btn {
+    color: #3a9afd;
+    padding: 3px;
+}
+.wrapper .sWrapper .active{
+    color: #fff;
+    background: #3a9afd;
+    border-radius: 3px;
+}
+
+/* 具体数据列表部分 */
+.wrapper .fWrapper {
+   position: relative;
+   margin-top: 10px;
+}
+/* .wrapper .fWrapper ul {
+    
+} */
+.wrapper .fWrapper li {
+    border-bottom: 1px solid #eee;
+    height: 60px;
+    position: relative;
+}
+
+.wrapper .fWrapper li img{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.wrapper .fWrapper li p {
+   padding-left: 70px;
+}
+
+.wrapper .fWrapper li p.des {
+    color: #999;
+    margin-top: 6px;
+    font-size: 12px;
+ }
