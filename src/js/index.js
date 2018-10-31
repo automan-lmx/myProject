@@ -13,7 +13,15 @@ var oUl = document.getElementsByTagName('ul')[0];
 var oInput = document.getElementsByClassName('sText')[0];
 // 全局过滤变量，耦合度高
 // 当筛选条件过多就会造成冗杂
-var filterText = '', filterSex = 'all';
+// var filterText = '', filterSex = 'all';
+
+
+// 使用一个对象来存储变量
+var state = {
+    text: '',
+    sex: 'all'
+}
+
 /**
  * 动态往页面插入数据
   尽量使用纯函数思想 
@@ -33,19 +41,20 @@ function insertData(data) {
 insertData(personArray);
 
 // 输入框输入搜索
-oInput.oninput = function (e) {
+oInput.oninput = function () {
     // 这里还要避免高频触发
-    filterText = this.value;
+    state.text = this.value;
     // 根据过滤之后重新渲染数据
-    var matchPerson =filterPerson(personArray, filterText);
-    var matchSex = filterArrBySex(matchPerson, filterSex);
-    insertData(matchSex);
+    // var matchPerson =filterArrByText(personArray, filterText);
+    // var matchSex = filterArrBySex(matchPerson, filterSex);
+    insertData(lastResult(personArray));
 }
 
 // 获取数据的事件
 function event(){
     console.log(this.value);
 }
+
 // 避免高频触发的函数,防抖
 function debounce(handler, delay) {
     var timer;
@@ -56,16 +65,7 @@ function debounce(handler, delay) {
         return handler.apply(self, _args);
     }, delay);
 }
-function filterPerson(data, text) {
-    if (!text) { // 如果输入为空，直接返回原来的数据
-        return data;
-    } else {
-        // 根据过滤规则过滤不符合筛选条件的数据
-        return data.filter(function (ele, index) {
-            return ele.name.indexOf(text) != -1;
-        })
-    }
-}
+
 
 /**
  * 实现点击不同的按钮进行筛选
@@ -76,10 +76,10 @@ oBtn.forEach(function (ele, index) {
     ele.onclick = function () {
         changeActive(this);
         // selectSex(this); 不推荐这种，耦合性高
-        filterSex = this.getAttribute('sex');
-        var newArr = filterArrBySex(personArray, filterSex);
-        var newArr2 = filterPerson(newArr, filterText);
-        insertData(newArr2);
+        state.sex = this.getAttribute('sex');
+        // var newArr = filterArrBySex(personArray, filterSex);
+        // var newArr2 = filterArrByText(newArr, filterText);
+        insertData(lastResult(personArray));
     }
 })
 
@@ -112,16 +112,5 @@ function selectSex(dom) {
             return ele.sex == dom.innerText;
         });
         insertData(data);
-    }
-}
-
-// 筛选事件通过性别
-function filterArrBySex(data, sex){
-    if(sex == 'all'){
-        return data;
-    }else{
-        return data.filter(function(ele,index){
-            return ele.sex == sex;
-        });
     }
 }
