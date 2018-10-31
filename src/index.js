@@ -11,7 +11,7 @@ var personArray = [
 // 把数据渲染到页面
 var oUl = document.getElementsByTagName('ul')[0];
 var oInput = document.getElementsByClassName('sText')[0];
-
+var filterText = '', filterSex = 'all';
 /**
  * 动态往页面插入数据
   尽量使用纯函数思想 
@@ -31,11 +31,13 @@ function insertData(data) {
 insertData(personArray);
 
 // 输入框输入搜索
-oInput.oninput = function () {
+oInput.oninput = function (e) {
     // 这里还要避免高频触发
-    var filterText = debounce(event,0);
+    filterText = this.value;
     // 根据过滤之后重新渲染数据
-    insertData(matchPerson(personArray, filterText));
+    var matchPerson =filterPerson(personArray, filterText);
+    var matchSex = filterArrBySex(matchPerson, filterSex);
+    insertData(matchSex);
 }
 
 // 获取数据的事件
@@ -52,7 +54,7 @@ function debounce(handler, delay) {
         return handler.apply(self, _args);
     }, delay);
 }
-function matchPerson(data, text) {
+function filterPerson(data, text) {
     if (!text) { // 如果输入为空，直接返回原来的数据
         return data;
     } else {
@@ -63,13 +65,19 @@ function matchPerson(data, text) {
     }
 }
 
-var oBtn = [].slice.call(document.getElementsByClassName('btn'));
+/**
+ * 实现点击不同的按钮进行筛选
+ */
+var oBtn = [].slice.call(document.getElementsByClassName('btn')); 
 var lastBtn = oBtn[2];
 oBtn.forEach(function (ele, index) {
     ele.onclick = function () {
         changeActive(this);
         // selectSex(this); 不推荐这种，耦合性高
-        insertData(filterSex(personArray, this.getAttribute('sex')))
+        filterSex = this.getAttribute('sex');
+        var newArr = filterArrBySex(personArray, filterSex);
+        var newArr2 = filterPerson(newArr, filterText);
+        insertData(newArr2);
     }
 })
 
@@ -105,7 +113,7 @@ function selectSex(dom) {
     }
 }
 
-function filterSex(data, sex){
+function filterArrBySex(data, sex){
     if(sex == 'all'){
         return data;
     }else{
