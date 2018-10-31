@@ -12,6 +12,7 @@ var personArray = [
 var oUl = document.getElementsByTagName('ul')[0];
 var oInput = document.getElementsByClassName('sText')[0];
 // 全局过滤变量，耦合度高
+// 当筛选条件过多就会造成冗杂
 var filterText = '', filterSex = 'all';
 /**
  * 动态往页面插入数据
