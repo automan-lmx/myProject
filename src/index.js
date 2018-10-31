@@ -11,6 +11,7 @@ var personArray = [
 // 把数据渲染到页面
 var oUl = document.getElementsByTagName('ul')[0];
 var oInput = document.getElementsByClassName('sText')[0];
+// 全局过滤变量，耦合度高
 var filterText = '', filterSex = 'all';
 /**
  * 动态往页面插入数据
@@ -113,6 +114,7 @@ function selectSex(dom) {
     }
 }
 
+// 筛选事件通过性别
 function filterArrBySex(data, sex){
     if(sex == 'all'){
         return data;
